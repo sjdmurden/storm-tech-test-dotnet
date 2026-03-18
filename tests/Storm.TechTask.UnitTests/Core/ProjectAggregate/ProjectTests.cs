@@ -65,12 +65,23 @@ namespace Storm.TechTask.UnitTests.Core.ProjectAggregate
             actual.ShouldHaveSameStateAs(expected);
         }
 
-        /* 
+
         // Uncomment this block for Task 3 - Fix a bug 
         [Fact]
         public void ChangesStateWhenClosed()
         {
+            var actual = NewProject().Set(p => p.Status, ProjectStatus.Open).Build();
+            var expected = NewProject().BuildFrom(actual).Set(p => p.Status, ProjectStatus.Closed).Build();
+
+            // Act
+            actual.Close();
+
+            // Assert
+            actual.ShouldHaveSameStateAs(expected);
         }
-        */
+        /*
+         I created this test using the same structure as the tests above it. Saw it failed the test, fixed it in Project.cs, now it passes.
+         */
+
     }
 }
