@@ -1,6 +1,8 @@
 ﻿
 using Duende.IdentityModel.Client;
 
+using Microsoft.AspNetCore.Http;
+
 using Storm.TechTask.Api.Endpoints.Project;
 using Storm.TechTask.Api.IntegrationTests.Utilities;
 using Storm.TechTask.Core.ProjectAggregate;
@@ -30,7 +32,12 @@ namespace Storm.TechTask.Api.IntegrationTests.Endpoints.Projects
             var response = await this.HttpClient.PostAsync($"/Projects", new CreateProject.Command("name", ProjectCategory.Development, true));
 
             // Assert
-            await response.ShouldBeSuccess().WithObjectPayload(new ProjectDto(await response.GetJsonIntProp("id"), "name"));
+            // await response.ShouldBeSuccess().WithObjectPayload(new ProjectDto(await response.GetJsonIntProp("id"), "name"));
+            // the above line has been changed to this for task 5 -  assert code is 201 created:
+            Assert.Equal(StatusCodes.Status201Created, (int)response.StatusCode);
+
+            // assert the proj exists in db
+            var createdId = await response.GetJsonIntProp("id");
             var expected = NewProject()
                 .Set(p => p.Id, await response.GetJsonIntProp("id"))
                 .Set(p => p.Name, "name")
