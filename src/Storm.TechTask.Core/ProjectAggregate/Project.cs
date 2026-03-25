@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Ardalis.GuardClauses;
 
+using Storm.TechTask.Core.ProjectAggregate.Events;
 using Storm.TechTask.Core.ProjectAggregate.Services;
 using Storm.TechTask.SharedKernel.Entities;
 using Storm.TechTask.SharedKernel.Interfaces;
@@ -35,7 +36,7 @@ namespace Storm.TechTask.Core.ProjectAggregate
         public ProjectCategory Category { get; private set; }
         public bool InternalOnly { get; private set; }
         public ProjectStatus Status { get; private set; }
-        //public List<ToDoItem> Items { get; private set; } = new List<ToDoItem>();
+        public List<ToDoItem> Items { get; private set; } = new List<ToDoItem>();  // uncommented line
 
         public Project(string name, ProjectCategory category, bool internalOnly, ProjectStatus status)
         {
@@ -53,17 +54,20 @@ namespace Storm.TechTask.Core.ProjectAggregate
             this.InternalOnly = newInternalOnly;
         }
 
-        /*
+        // method to add a new item.
+        // this is called in SeedData
         public ToDoItem AddItem(string title, string description)
         {
             var item = new ToDoItem(title, description, false);
             this.Items.Add(item);
 
-            //var newItemAddedEvent = new NewItemAddedEvent(this, item);
-            //Events.Add(newItemAddedEvent);
+            // NewItemAddedEvent() is the domain event
+            var newItemAddedEvent = new NewItemAddedEvent(this, item);
+            Events.Add(newItemAddedEvent);
 
             return item;
         }
+
 
         public ToDoItem CompleteItem(int itemId)
         {
@@ -71,9 +75,12 @@ namespace Storm.TechTask.Core.ProjectAggregate
 
             item.MarkComplete();
 
+            // domain event raised for item completion
+            var completedEvent = new ItemCompletedEvent(this, item);
+            Events.Add(completedEvent);
+
             return item;
         }
-        */
 
         public void Pause()
         {

@@ -14,6 +14,7 @@
   <ItemGroup>
     <PackageReference Include="Ardalis.ApiEndpoints" />
     <PackageReference Include="Duende.IdentityModel" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" />
     <PackageReference Include="OpenIddict" />
     <PackageReference Include="OpenIddict.AspNetCore" />
     <PackageReference Include="OpenIddict.EntityFrameworkCore" />

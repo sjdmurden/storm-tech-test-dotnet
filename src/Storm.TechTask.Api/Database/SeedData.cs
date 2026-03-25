@@ -33,6 +33,11 @@ namespace Storm.TechTask.Api.Database
                 using (var dbContext = new AppDbContext(serviceProvider.GetRequiredService<DbContextOptions<AppDbContext>>(), null))
                 {
                     // Look for any Projects.
+                    
+                    // if any projects exist, seeding is skipped, so PopulateTestData isn't ran so the ToDoItems1,2,3 don't get added
+                    // sqlite file needed deleting as it contained prepopulated projects, and every time the code ran, the db would get populated,
+                    // the below condition would have been met, and then PopulateTestData() would not have run
+                    // With the file deleted, the db would be populated with the test proj 1
                     if (dbContext.Set<Project>().Any())
                     {
                         return;   // DB has been seeded
@@ -64,6 +69,7 @@ namespace Storm.TechTask.Api.Database
                 TestProject1.AddItem(ToDoItem2.Title, ToDoItem2.Description);
                 TestProject1.AddItem(ToDoItem3.Title, ToDoItem3.Description);
             }
+            // these now get added to test proj 1
 
             dbContext.Add(TestProject1);
 

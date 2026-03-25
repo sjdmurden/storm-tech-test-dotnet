@@ -27,7 +27,7 @@ namespace Storm.TechTask.Api.Endpoints.Project
         public override async Task<ActionResult<List<ProjectDto>>> HandleAsync([FromRoute] AllProjects.Query request, CancellationToken cancellationToken)
         {
             var projects = (await _mediator.Send(request, cancellationToken))
-                .Select(project => new ProjectDto(project.Id, project.Name))
+                .Select(project => new ProjectDto(project.Id, project.Name, project.Items.Select(i => new ToDoItemDto(i)))) //adding items param list
                 .ToList();
 
             return Ok(projects);

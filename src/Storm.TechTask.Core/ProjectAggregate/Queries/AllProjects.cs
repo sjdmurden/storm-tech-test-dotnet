@@ -10,6 +10,8 @@ using Storm.TechTask.SharedKernel.Authorization;
 using Storm.TechTask.SharedKernel.Handlers;
 using Storm.TechTask.SharedKernel.Interfaces;
 
+using Microsoft.EntityFrameworkCore; // need this for .Include()
+
 namespace Storm.TechTask.Core.ProjectAggregate.Queries
 {
     public static class AllProjects
@@ -27,10 +29,22 @@ namespace Storm.TechTask.Core.ProjectAggregate.Queries
         {
             public Handler(IRepository repository, IUserSession session) : base(repository) { }
 
+
             public async Task<List<Project>> Handle(Query request, CancellationToken cancellationToken)
             {
-                return await LoadAllEntities<Project>(cancellationToken);
+                var projectsQuery = _repository.Query<Project>()
+                                               .Include(p => p.Items);
+
+                return await projectsQuery.ToListAsync(cancellationToken);
             }
+            // this calls Query<Project>() from the repository and INCLUDES the items that have been added
+
+
+            /*public async Task<List<Project>> Handle(Query request, CancellationToken cancellationToken)
+            {
+                
+                return await LoadAllEntities<Project>(cancellationToken);
+            }*/
         }
     }
 }

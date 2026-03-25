@@ -23,12 +23,13 @@ namespace Storm.TechTask.Api.Endpoints.Project
             Description = "Creates a new Project",
             OperationId = "Projects.Create",
             Tags = new[] { "ProjectEndpoints" })]
+        [ProducesResponseType(typeof(ProjectDto), StatusCodes.Status201Created)]
         public override async Task<ActionResult<ProjectDto>> HandleAsync(CreateProject.Command request,
             CancellationToken cancellationToken)
         {
             var project = await _mediator.Send(request, cancellationToken);
 
-            return Ok(new ProjectDto(project.Id, project.Name));
+            return CreatedAtRoute("GetProjectById", new { id = project.Id }, new ProjectDto(project.Id, project.Name));
         }
     }
 }

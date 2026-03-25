@@ -1,25 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 using Storm.TechTask.SharedKernel.Entities; // need this as BaseDomainEvent is referenced whcih is in SharedKernel.Entities
 
 namespace Storm.TechTask.Core.ProjectAggregate.Events
 {
-
-    public class NewItemAddedEvent : BaseDomainEvent
+    public class ItemCompletedEvent : BaseDomainEvent
     {
-        public ToDoItem NewItem { get; set; }
+        public ToDoItem Item { get; set; }
         public Project Project { get; set; }
 
-        public NewItemAddedEvent(Project project,
-            ToDoItem newItem)
+        public ItemCompletedEvent(Project project,
+            ToDoItem item)
         {
             Project = project;
-            NewItem = newItem;
+            Item = item;
         }
     }
-
 }

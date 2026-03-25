@@ -23,6 +23,13 @@ namespace Storm.TechTask.Infrastructure.Repository
             _dbContext = dbContext;
         }
 
+        // this implements Query from IRepo to return the db table
+        // this essentially creates a queryable database object for the projects table
+        public IQueryable<T> Query<T>() where T : class
+        {
+            return _dbContext.Set<T>();
+        }
+
         public async Task<T?> GetByIdAsync<T>(int id, CancellationToken cancellationToken) where T : BaseEntity
         {
             return await _dbContext.Set<T>().SingleOrDefaultAsync(e => e.Id == id, cancellationToken);
@@ -106,5 +113,12 @@ namespace Storm.TechTask.Infrastructure.Repository
 
             return SpecificationEvaluator.Default.GetQuery(_dbContext.Set<T>().AsQueryable(), specification);
         }
+
+
+
+        /*public IQueryable<T> Query<T>() where T : class
+        {
+            return _dbContext.Set<T>();
+        }*/
     }
 }

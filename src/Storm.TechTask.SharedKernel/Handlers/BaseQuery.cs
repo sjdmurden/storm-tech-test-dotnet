@@ -23,7 +23,7 @@ namespace Storm.TechTask.SharedKernel.Handlers
 
     public abstract class BaseQueryHandler
     {
-        private readonly IRepository _repository;
+        protected readonly IRepository _repository; // changed from private to protected to allow the handler in AllProjects.cs to access it
 
         protected BaseQueryHandler(IRepository repository)
             => _repository = repository;
